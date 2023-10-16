@@ -1,0 +1,76 @@
+package com.scp.web.common;
+
+import io.cucumber.java.Scenario;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+public interface IWebUICommon {
+    public void capturePageScreenshot();
+    public void capturePageScreenshot(String fileName);
+    public void clearText(By location);
+    public void clearText(WebElement element);
+    public void clickElement(By location);
+    public void clickElement(WebElement element);
+    public void clickAndHoldElement(By location);
+    public void clickAndHoldElement(WebElement element);
+    public void clickText(String text);
+    public void dragAndDrop(By sourceLocation, By destinationLocation);
+    public void dragAndDrop(WebElement sourceElement, WebElement destinationElement);
+    public void doubleClickElement(By location);
+    public void doubleClickElement(WebElement element);
+    public void elementAttributeShouldMatch(By location, String attribute, String expect);
+    public void elementAttributeShouldMatch(WebElement element, String attribute, String expect);
+    public void elementAttributeShouldNotMatch(By location, String attribute, String expect);
+    public void elementAttributeShouldNotMatch(WebElement element, String attribute, String expect);
+    public void elementShouldBeDisabled(By location);
+    public void elementShouldBeDisabled(WebElement element);
+    public void elementShouldBeEnabled(By location);
+    public void elementShouldBeEnabled(WebElement element);
+    public void elementShouldBeVisible(By location);
+    public void elementShouldBeVisible(WebElement element);
+    public void elementShouldContainText(By location, String text);
+    public void elementShouldContainText(WebElement element, String text);
+    public void elementShouldNotContainText(By location, String text);
+    public void elementShouldNotContainText(WebElement element, String text);
+    public void elementTextShouldBe(By location, String text);
+    public void elementTextShouldBe(WebElement element, String text);
+    public void elementValueShouldBe(By location, String value);
+    public void elementValueShouldBe(WebElement element, String value);
+    public void elementTextShouldNotBe(By location, String text);
+    public void elementTextShouldNotBe(WebElement element, String text);
+    public void elementValueShouldNotBe(By location, String value);
+    public void elementValueShouldNotBe(WebElement element, String value);
+    public void getCurrentUrl();
+    public WebElement getElement(By location);
+    public List<WebElement> getElements(By location);
+    public WebElement getElement(By location, long timeout);
+    public List<WebElement> getElements(By location, long timeout);
+    public String getElementAttribute(By location);
+    public String getElementAttribute(WebElement element);
+    public int getNumberOfListElement(By location);
+    public int getNumberOfListElement(List<WebElement> elementList);
+    public String getSourcePage();
+    public String getText(By location);
+    public String getText(WebElement element);
+    public void hoverElement(By location);
+    public void hoverElement(WebElement element);
+    public void inputText(By location);
+    public void inputText(WebElement element);
+    public void navigateToURL(String url);
+    public void pageShouldContainText(String text);
+    public void pageShouldNotContainText(String text);
+    public void pageShouldContainElement(By location);
+    public void pageShouldNotContainElement(By location);
+    public void pageShouldContainElement(WebElement element);
+    public void pageShouldNotContainElement(WebElement element);
+    public void reloadCurrentPage();
+    public void waitUntilPageContainText(String text);
+    public void waitUntilPageContainText(String text, long millis);
+    public void waitUntilPageContainElement(By location);
+    public void waitUntilPageNotContainElement(By location);
+    public void waitUntilPageContainElement(WebElement element);
+    public void waitUntilPageNotContainElement(WebElement element);
+
+}
