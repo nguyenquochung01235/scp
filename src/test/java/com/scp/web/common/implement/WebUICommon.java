@@ -6,6 +6,7 @@ import com.scp.web.driver.DriverBase;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
@@ -32,6 +33,11 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
 
     @Override
     public void capturePageScreenshot(String fileName) {
+        if(fileName.isBlank()){
+            throw new IllegalArgumentException("File name can be null or blank");
+        }
+        fileName = fileName.trim();
+        fileName = fileName.replace(" ","_");
         File screenshotFile = ((TakesScreenshot)baseDriver).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(screenshotFile,new File("./src/results/screenshot/"+fileName+".png"));
@@ -80,16 +86,35 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
 
     @Override
     public void clickAndHoldElement(By location) {
-
+        try {
+            Actions actions = new Actions(baseDriver);
+            actions.clickAndHold(getElement(location)).perform();
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void clickAndHoldElement(WebElement element) {
-
+        try {
+            Actions actions = new Actions(baseDriver);
+            actions.clickAndHold(element).perform();
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void clickText(String text) {
+        try{
+            if(text.isEmpty() || text.isBlank()){
+                throw new IllegalArgumentException("Text expect can be null or blank");
+            }
+            WebElement element = getElement(By.xpath("//body/*[text()[contains(.,'"+text+"')]][not(script)]"));
+            element.click();
+        }catch (Exception error){
+            System.err.println("No such found element contain text");
+        }
 
     }
 
