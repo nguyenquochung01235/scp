@@ -47,6 +47,16 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
     }
 
     @Override
+    public void clearText(String xpath) {
+        try {
+            WebElement element = getElement(xpath);
+            element.clear();
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
+
+    @Override
     public void clearText(By location) throws NoSuchElementException{
         try {
             WebElement element = getElement(location);
@@ -66,6 +76,16 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
     }
 
     @Override
+    public void clickElement(String xpath) {
+        try {
+            WebElement element = getElement(xpath);
+            element.click();
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
+
+    @Override
     public void clickElement(By location) {
         try {
             WebElement element = getElement(location);
@@ -79,6 +99,16 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
     public void clickElement(WebElement element) {
         try {
             element.click();
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
+
+    @Override
+    public void clickAndHoldElement(String xpath) {
+        try {
+            Actions actions = new Actions(baseDriver);
+            actions.clickAndHold(getElement(xpath)).perform();
         }catch (Exception exception){
             System.err.println("No such found element");
         }
@@ -119,138 +149,413 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
     }
 
     @Override
-    public void dragAndDrop(By sourceLocation, By destinationLocation) {
+    public void dragAndDrop(String sourceXpath, String destinationXpath) {
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.dragAndDrop(getElement(sourceXpath), getElement(destinationXpath)).perform();
+        }catch (Exception error){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void dragAndDrop(By sourceLocation, By destinationLocation) {
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.dragAndDrop(getElement(sourceLocation), getElement(destinationLocation)).perform();
+        }catch (Exception error){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void dragAndDrop(WebElement sourceElement, WebElement destinationElement) {
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.dragAndDrop(sourceElement, destinationElement).perform();
+        }catch (Exception error){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void doubleClickElement(String xpath) {
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.doubleClick(getElement(xpath));
+        }catch (Exception error){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void doubleClickElement(By location) {
-
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.doubleClick(getElement(location));
+        }catch (Exception error){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void doubleClickElement(WebElement element) {
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.doubleClick(element);
+        }catch (Exception error){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementAttributeShouldMatch(String xpath, String attribute, String expect) {
+        try {
+            String actualAttribute = getElement(xpath).getAttribute(attribute);
+            Assert.assertEquals(actualAttribute, expect, "Attribute of element does not match");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementAttributeShouldMatch(By location, String attribute, String expect) {
-
+        try {
+            String actualAttribute = getElement(location).getAttribute(attribute);
+            Assert.assertEquals(actualAttribute, expect, "Attribute of element does not match");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementAttributeShouldMatch(WebElement element, String attribute, String expect) {
+        try {
+            String actualAttribute = element.getAttribute(attribute);
+            Assert.assertEquals(actualAttribute, expect, "Attribute of element does not match");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementAttributeShouldNotMatch(String xpath, String attribute, String expect) {
+        try {
+            String actualAttribute = getElement(xpath).getAttribute(attribute);
+            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is match");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementAttributeShouldNotMatch(By location, String attribute, String expect) {
-
+        try {
+            String actualAttribute = getElement(location).getAttribute(attribute);
+            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is match");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementAttributeShouldNotMatch(WebElement element, String attribute, String expect) {
+        try {
+            String actualAttribute = element.getAttribute(attribute);
+            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is match");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementShouldBeDisabled(String xpath) {
+        try {
+            WebElement element = getElement(xpath);
+            Assert.assertFalse(element.isEnabled(), "Element is not disabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldBeDisabled(By location) {
-
+        try {
+            WebElement element = getElement(location);
+            Assert.assertFalse(element.isEnabled(), "Element is not disabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldBeDisabled(WebElement element) {
+        try {
+            Assert.assertFalse(element.isEnabled(), "Element is not disabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementShouldBeEnabled(String xpath) {
+        try {
+            WebElement element = getElement(xpath);
+            Assert.assertTrue(element.isEnabled(), "Element is not enabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldBeEnabled(By location) {
-
+        try {
+            WebElement element = getElement(location);
+            Assert.assertTrue(element.isEnabled(), "Element is not enabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldBeEnabled(WebElement element) {
+        try {
+            Assert.assertTrue(element.isEnabled(), "Element is not enabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementShouldBeVisible(String xpath) {
+        try {
+            WebElement element = getElement(xpath);
+            Assert.assertTrue(element.isEnabled(), "Element is not enabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldBeVisible(By location) {
-
+        try {
+            WebElement element = getElement(location);
+            Assert.assertTrue(element.isEnabled(), "Element is not enabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldBeVisible(WebElement element) {
+        try {
+            Assert.assertTrue(element.isDisplayed(), "Element is not enabled");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementShouldContainText(String xpath, String text) {
+        try {
+            String actualText = getElement(xpath).getText();
+            Assert.assertTrue(actualText.contains(text), "Element text not contain '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldContainText(By location, String text) {
-
+        try {
+            String actualText = getElement(location).getText();
+            Assert.assertTrue(actualText.contains(text), "Element text not contain '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldContainText(WebElement element, String text) {
+        try {
+            String actualText = element.getText();
+            Assert.assertTrue(actualText.contains(text), "Element text not contain '"+text+"'");
+        }catch (Exception exception){
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementShouldNotContainText(String xpath, String text) {
+        try {
+            String actualText = getElement(xpath).getText();
+            Assert.assertFalse(actualText.contains(text), "Element text contain '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldNotContainText(By location, String text) {
-
+        try {
+            String actualText = getElement(location).getText();
+            Assert.assertFalse(actualText.contains(text), "Element text contain '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementShouldNotContainText(WebElement element, String text) {
+        try {
+            String actualText = element.getText();
+            Assert.assertFalse(actualText.contains(text), "Element text contain '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementTextShouldBe(String xpath, String text) {
+        try {
+            String actualText = getElement(xpath).getText();
+            Assert.assertEquals(actualText, text,"Element text not equal with '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementTextShouldBe(By location, String text) {
-
+        try {
+            String actualText = getElement(location).getText();
+            Assert.assertEquals(actualText, text,"Element text not equal with '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementTextShouldBe(WebElement element, String text) {
+        try {
+            String actualText = element.getText();
+            Assert.assertEquals(actualText, text,"Element text not equal with '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementValueShouldBe(String xpath, String value) {
+        try {
+            String actualValue = getElement(xpath).getAttribute("value");
+            Assert.assertEquals(actualValue, value,"Element value not equal with '"+value+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementValueShouldBe(By location, String value) {
-
+        try {
+            String actualValue = getElement(location).getAttribute("value");
+            Assert.assertEquals(actualValue, value,"Element value not equal with '"+value+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementValueShouldBe(WebElement element, String value) {
+        try {
+            String actualValue = element.getAttribute("value");
+            Assert.assertEquals(actualValue, value,"Element value not equal with '"+value+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementTextShouldNotBe(String xpath, String text) {
+        try {
+            String actualText = getElement(xpath).getText();
+            Assert.assertNotEquals(actualText, text,"Element text equal with '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementTextShouldNotBe(By location, String text) {
-
+        try {
+            String actualText = getElement(location).getText();
+            Assert.assertNotEquals(actualText, text,"Element text equal with '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementTextShouldNotBe(WebElement element, String text) {
+        try {
+            String actualText = element.getText();
+            Assert.assertNotEquals(actualText, text,"Element text equal with '"+text+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
+    }
 
+    @Override
+    public void elementValueShouldNotBe(String xpath, String value) {
+        try {
+            String actualValue = getElement(xpath).getAttribute("value");
+            Assert.assertNotEquals(actualValue, value,"Element value equal with '"+value+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementValueShouldNotBe(By location, String value) {
-
+        try {
+            String actualValue = getElement(location).getAttribute("value");
+            Assert.assertNotEquals(actualValue, value,"Element value equal with '"+value+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
     public void elementValueShouldNotBe(WebElement element, String value) {
-
+        try {
+            String actualValue = element.getAttribute("value");
+            Assert.assertNotEquals(actualValue, value,"Element value equal with '"+value+"'");
+        }catch (Exception exception) {
+            System.err.println("No such found element");
+        }
     }
 
     @Override
-    public void getCurrentUrl() {
+    public String getCurrentUrl() {
+        try{
+            return baseDriver.getCurrentUrl();
+        }catch (Exception exception){
+            throw new RuntimeException("Can not get current url");
+        }
+    }
 
+    @Override
+    public WebElement getElement(String xpath) {
+        try{
+            Wait<WebDriver> wait = new FluentWait<>(baseDriver)
+                    .withTimeout(Duration.ofMillis(ApplicationConstant.TIME_OUT))
+                    .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
+                    .ignoring(NoSuchElementException.class);
+
+            return  wait.until(driver -> driver.findElement(By.xpath(xpath)));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
@@ -261,16 +566,24 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
                        .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
                        .ignoring(NoSuchElementException.class);
 
-               return  wait.until(driver -> {
-                   if(driver.findElement(location).isDisplayed()){
-                       return driver.findElement(location);
-                   }
-                   return null;
-               });
+               return  wait.until(driver -> driver.findElement(location));
            }catch (Exception error){
-               System.err.println("No such found element");
-               return null;
+               throw new RuntimeException("No such found element");
            }
+    }
+
+    @Override
+    public List<WebElement> getElements(String xpath) {
+        try{
+            Wait<WebDriver> wait = new FluentWait<>(baseDriver)
+                    .withTimeout(Duration.ofMillis(ApplicationConstant.TIME_OUT))
+                    .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
+                    .ignoring(NoSuchElementException.class);
+
+            return  wait.until(driver -> driver.findElements(By.xpath(xpath)));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
@@ -281,101 +594,224 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
                     .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
                     .ignoring(NoSuchElementException.class);
 
-            return  wait.until(driver -> {
-                if(driver.findElement(location).isDisplayed()){
-                    return driver.findElements(location);
-                }
-                return null;
-            });
-        }catch (NoSuchElementException error){
-            System.err.println("No such found element");
-            return null;
+            return  wait.until(driver -> driver.findElements(location));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
+    }
+
+    @Override
+    public WebElement getElement(String xpath, long timeout) {
+        try{
+            Wait<WebDriver> wait = new FluentWait<>(baseDriver)
+                    .withTimeout(Duration.ofMillis(timeout))
+                    .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
+                    .ignoring(NoSuchElementException.class);
+
+            return  wait.until(driver -> driver.findElement(By.xpath(xpath)));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
         }
     }
 
     @Override
     public WebElement getElement(By location, long timeout) {
-        Wait<WebDriver> wait = new FluentWait<>(baseDriver)
-                .withTimeout(Duration.ofMillis(timeout))
-                .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
-                .ignoring(NoSuchElementException.class);
+        try{
+            Wait<WebDriver> wait = new FluentWait<>(baseDriver)
+                    .withTimeout(Duration.ofMillis(timeout))
+                    .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
+                    .ignoring(NoSuchElementException.class);
 
-        return  wait.until(driver -> {
-            if(driver.findElement(location).isDisplayed()){
-                return driver.findElement(location);
-            }
-            return null;
-        });
+            return  wait.until(driver -> driver.findElement(location));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
+    }
+
+    @Override
+    public List<WebElement> getElements(String xpath, long timeout) {
+        try{
+            Wait<WebDriver> wait = new FluentWait<>(baseDriver)
+                    .withTimeout(Duration.ofMillis(timeout))
+                    .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
+                    .ignoring(NoSuchElementException.class);
+
+            return  wait.until(driver -> driver.findElements(By.xpath(xpath)));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public List<WebElement> getElements(By location, long timeout) {
-        Wait<WebDriver> wait = new FluentWait<>(baseDriver)
-                .withTimeout(Duration.ofMillis(timeout))
-                .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
-                .ignoring(NoSuchElementException.class);
+        try{
+            Wait<WebDriver> wait = new FluentWait<>(baseDriver)
+                    .withTimeout(Duration.ofMillis(timeout))
+                    .pollingEvery(Duration.ofMillis(ApplicationConstant.POLLING))
+                    .ignoring(NoSuchElementException.class);
 
-        return  wait.until(driver -> {
-            if(driver.findElement(location).isDisplayed()){
-                return driver.findElements(location);
-            }
-            return null;
-        });
+            return  wait.until(driver -> driver.findElements(location));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
-    public String getElementAttribute(By location) {
-        return null;
+    public String getElementAttribute(String xpath, String attribute) {
+        try{
+            if(attribute.isEmpty() || attribute.isBlank()) throw new IllegalArgumentException("Attribute can be null or empty");
+            String attributeValue = getElement(xpath).getAttribute(attribute);
+            Assert.assertNotNull(attributeValue, "Not found '"+attribute+"' attribute in this element");
+            return attributeValue;
+        }catch (Exception exception){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
-    public String getElementAttribute(WebElement element) {
-        return null;
+    public String getElementAttribute(By location, String attribute) {
+        try{
+            if(attribute.isEmpty() || attribute.isBlank()) throw new IllegalArgumentException("Attribute can be null or empty");
+            String attributeValue = getElement(location).getAttribute(attribute);
+            Assert.assertNotNull(attributeValue, "Not found '"+attribute+"' attribute in this element");
+            return attributeValue;
+        }catch (Exception exception){
+            throw new RuntimeException("No such found element");
+        }
+    }
+
+    @Override
+    public String getElementAttribute(WebElement element, String attribute) {
+        try{
+            if(attribute.isEmpty() || attribute.isBlank()) throw new IllegalArgumentException("Attribute can be null or empty");
+            String attributeValue = element.getAttribute(attribute);
+            Assert.assertNotNull(attributeValue, "Not found '"+attribute+"' attribute in this element");
+            return attributeValue;
+        }catch (Exception exception){
+            throw new RuntimeException("No such found element");
+        }
+    }
+
+    @Override
+    public int getNumberOfListElement(String xpath) {
+        try{
+            List<WebElement> elementList = getElements(xpath);
+            return elementList.size();
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public int getNumberOfListElement(By location) {
-        return 0;
+        try{
+            List<WebElement> elementList = getElements(location);
+            return elementList.size();
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public int getNumberOfListElement(List<WebElement> elementList) {
-        return 0;
+        try{
+            return elementList.size();
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public String getSourcePage() {
-        return null;
+        try{
+            return baseDriver.getPageSource();
+        }catch (Exception error){
+            throw new RuntimeException("Can not get source base");
+        }
+    }
+
+    @Override
+    public String getText(String xpath) {
+        try{
+            return getElement(xpath).getText();
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public String getText(By location) {
-        return null;
+        try{
+            return getElement(location).getText();
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public String getText(WebElement element) {
-        return null;
+        try{
+            return element.getText();
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
+    }
+
+    @Override
+    public void hoverElement(String xpath) {
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.moveToElement(getElement(xpath));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public void hoverElement(By location) {
-
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.moveToElement(getElement(location));
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
     public void hoverElement(WebElement element) {
-
+        try{
+            Actions actions = new Actions(baseDriver);
+            actions.moveToElement(element);
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
-    public void inputText(By location) {
-
+    public void inputText(String xpath, String text) {
+        try{
+            getElement(xpath).sendKeys(text);
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
-    public void inputText(WebElement element) {
+    public void inputText(By location, String text) {
+        try{
+            getElement(location).sendKeys(text);
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
+    }
 
+    @Override
+    public void inputText(WebElement element, String text) {
+        try{
+            element.sendKeys(text);
+        }catch (Exception error){
+            throw new RuntimeException("No such found element");
+        }
     }
 
     @Override
@@ -391,66 +827,192 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
 
     @Override
     public void pageShouldContainText(String text) {
-
+        try{
+            if(text.isBlank() || text.isEmpty()) throw new IllegalArgumentException("Text can be blank or empty");
+            Assert.assertTrue(baseDriver.getPageSource().contains(text), "Page not contain text '"+text+"'");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
     public void pageShouldNotContainText(String text) {
+        try{
+            if(text.isBlank() || text.isEmpty()) throw new IllegalArgumentException("Text can be blank or empty");
+            Assert.assertFalse(baseDriver.getPageSource().contains(text), "Page contain text '"+text+"'");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
+    }
 
+    @Override
+    public void pageShouldContainElement(String xpath) {
+        try{
+            Assert.assertFalse(getElements(xpath).isEmpty(), "Page not contain this element");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
     public void pageShouldContainElement(By location) {
+        try{
+            Assert.assertFalse(getElements(location).isEmpty(), "Page not contain this element");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
+    }
 
+    @Override
+    public void pageShouldNotContainElement(String xpath) {
+        try{
+            Assert.assertTrue(getElements(xpath).isEmpty(), "Page contain this element");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
     public void pageShouldNotContainElement(By location) {
-
+        try{
+            Assert.assertTrue(getElements(location).isEmpty(), "Page contain this element");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
-
-    @Override
-    public void pageShouldContainElement(WebElement element) {
-
-    }
-
-    @Override
-    public void pageShouldNotContainElement(WebElement element) {
-
-    }
-
     @Override
     public void reloadCurrentPage() {
-
+        try{
+            baseDriver.navigate().refresh();
+        }catch (Exception error){
+            System.err.println("Can not reload current page");
+        }
     }
 
     @Override
     public void waitUntilPageContainText(String text) {
-
+        try{
+            WebElement element = getElement(By.xpath("//*[text()[contains(.,'"+text+"')]][not(script)]"));
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
     public void waitUntilPageContainText(String text, long millis) {
+        try{
+            WebElement element = getElement(By.xpath("//*[text()[contains(.,'"+text+"')]][not(script)]"), millis);
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
+    }
 
+    @Override
+    public void waitUntilPageContainElement(String xpath) {
+        try{
+            Assert.assertFalse(getElements(xpath).isEmpty(), "Page not contain this element after 10 seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
     public void waitUntilPageContainElement(By location) {
+        try{
+            Assert.assertFalse(getElements(location).isEmpty(), "Page not contain this element after 10 seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
+    }
 
+    @Override
+    public void waitUntilPageNotContainElement(String xpath) {
+        try{
+            long timeout = ApplicationConstant.TIME_OUT;
+            while (timeout > 0){
+                if(getElements(xpath, ApplicationConstant.POLLING).isEmpty()) {
+                    timeout = 0;
+                }else{
+                    Thread.sleep(ApplicationConstant.POLLING);
+                    timeout -=ApplicationConstant.POLLING;
+                }
+            }
+            Assert.assertTrue(getElements(xpath).isEmpty(), "Page still contain this element after 10 seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
     public void waitUntilPageNotContainElement(By location) {
-
+        try{
+            long timeout = ApplicationConstant.TIME_OUT;
+            while (timeout > 0){
+                if(getElements(location, ApplicationConstant.POLLING).isEmpty()) {
+                    timeout = 0;
+                }else{
+                    Thread.sleep(ApplicationConstant.POLLING);
+                    timeout -=ApplicationConstant.POLLING;
+                }
+            }
+            Assert.assertTrue(getElements(location).isEmpty(), "Page still contain this element after 10 seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
-    public void waitUntilPageContainElement(WebElement element) {
-
+    public void waitUntilPageContainElement(String xpath, long millis) {
+        try{
+            Assert.assertFalse(getElements(xpath, millis).isEmpty(), "Page not contain this element after "+millis/1000+" seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
 
     @Override
-    public void waitUntilPageNotContainElement(WebElement element) {
-
+    public void waitUntilPageContainElement(By location, long millis) {
+        try{
+            Assert.assertFalse(getElements(location, millis).isEmpty(), "Page not contain this element after "+millis/1000+" seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
     }
+
+    @Override
+    public void waitUntilPageNotContainElement(String xpath, long millis) {
+        try{
+            long timeout = millis;
+            while (timeout > 0){
+                if(getElements(xpath, ApplicationConstant.POLLING).isEmpty()) {
+                    timeout = 0;
+                }else{
+                    Thread.sleep(ApplicationConstant.POLLING);
+                    timeout -=ApplicationConstant.POLLING;
+                }
+            }
+            Assert.assertTrue(getElements(xpath).isEmpty(), "Page still contain this element after "+millis/1000+" seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
+    }
+
+    @Override
+    public void waitUntilPageNotContainElement(By location, long millis) {
+        try{
+            long timeout = millis;
+            while (timeout > 0){
+                if(getElements(location, ApplicationConstant.POLLING).isEmpty()) {
+                    timeout = 0;
+                }else{
+                    Thread.sleep(ApplicationConstant.POLLING);
+                    timeout -=ApplicationConstant.POLLING;
+                }
+            }
+            Assert.assertTrue(getElements(location).isEmpty(), "Page still contain this element after "+millis/1000+" seconds");
+        }catch (Exception error){
+            System.err.println("Can not get source page");
+        }
+    }
+
 }

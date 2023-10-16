@@ -13,7 +13,7 @@ public class Demo {
         webUICommon.initialDriver();
         webUICommon.navigateToURL("https://www.saucedemo.com/v1/");
         webUICommon.capturePageScreenshot("before_click_login_button");
-        webUICommon.getElement(By.xpath("//*[@id=\"login-buttn\"]")).click();
+        webUICommon.waitUntilPageNotContainElement(By.xpath("//*[@id=\"login-button\"]"));
         webUICommon.capturePageScreenshot("after_click_login_button");
         webUICommon.quitDriver();
     }
