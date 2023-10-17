@@ -5,4 +5,5 @@ import java.util.function.Function;
 public interface IKeywordCommon {
     public void runKeywordAndIgnoreError(Function function);
     public void renKeywordAndReturnStatus(Function function);
+    public Object readFileAndConvertToJsonObject(String fileLocate);
 }
