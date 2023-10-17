@@ -1,7 +1,7 @@
 package com.scp.web.testcase;
 
 import com.scp.web.common.implement.WebUICommon;
-import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 public class Demo {
@@ -9,12 +9,10 @@ public class Demo {
     WebUICommon webUICommon = new WebUICommon();
 
     @Test
-    public void test(){
+    public void e2e(){
         webUICommon.initialDriver();
         webUICommon.navigateToURL("https://www.saucedemo.com/v1/");
-        webUICommon.capturePageScreenshot("before_click_login_button");
-        webUICommon.waitUntilPageNotContainElement(By.xpath("//*[@id=\"login-button\"]"));
-        webUICommon.capturePageScreenshot("after_click_login_button");
+        webUICommon.clickText("abc");
         webUICommon.quitDriver();
     }
 
