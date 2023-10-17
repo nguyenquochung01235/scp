@@ -5,6 +5,7 @@ import com.scp.web.common.implement.KeywordCommon;
 import com.scp.web.common.implement.WebUICommon;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,12 +21,13 @@ public class Demo {
     KeywordCommon keywordCommon = new KeywordCommon();
 
     @Test
-    public void test(){
+    public void e2e(){
         webUICommon.initialDriver();
         webUICommon.navigateToURL("https://www.saucedemo.com/v1/");
         webUICommon.capturePageScreenshot("before_click_login_button");
         webUICommon.getElement(By.xpath("//*[@id=\"login-button\"]")).click();
         webUICommon.capturePageScreenshot("after_click_login_button");
+        webUICommon.clickText("abc");
         webUICommon.quitDriver();
     }
 

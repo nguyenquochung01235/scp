@@ -36,8 +36,7 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
         if(fileName.isBlank()){
             throw new IllegalArgumentException("File name can be null or blank");
         }
-        fileName = fileName.trim();
-        fileName = fileName.replace(" ","_");
+        fileName = fileName.trim().replace(" ","_");
         File screenshotFile = ((TakesScreenshot)baseDriver).getScreenshotAs(OutputType.FILE);
         try {
             FileUtils.copyFile(screenshotFile,new File("./src/results/screenshot/"+fileName+".png"));
@@ -48,21 +47,21 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
 
     @Override
     public void clearText(String xpath) {
+        WebElement element = getElement(xpath);
         try {
-            WebElement element = getElement(xpath);
             element.clear();
-        }catch (Exception exception){
-            System.err.println("No such found element");
+        }catch (RuntimeException exception){
+            throw new InvalidElementStateException("Error: Can not clear text of element have path '"+xpath+"' cause this element not input type");
         }
     }
 
     @Override
     public void clearText(By location) throws NoSuchElementException{
+        WebElement element = getElement(location);
         try {
-            WebElement element = getElement(location);
             element.clear();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not clear text of element have path '"+location.toString()+"' cause this element not input type");
         }
     }
 
@@ -71,27 +70,27 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
         try {
             element.clear();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not clear text of element have path '"+element.toString()+"' cause this element not input type");
         }
     }
 
     @Override
     public void clickElement(String xpath) {
+        WebElement element = getElement(xpath);
         try {
-            WebElement element = getElement(xpath);
             element.click();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not click element have path '"+xpath+"', cause invalid state");
         }
     }
 
     @Override
     public void clickElement(By location) {
+        WebElement element = getElement(location);
         try {
-            WebElement element = getElement(location);
             element.click();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not click element have path '"+location.toString()+"', cause invalid state");
         }
     }
 
@@ -100,27 +99,29 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
         try {
             element.click();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not click element have path '"+element.toString()+"', cause invalid state");
         }
     }
 
     @Override
     public void clickAndHoldElement(String xpath) {
+        WebElement element = getElement(xpath);
         try {
             Actions actions = new Actions(baseDriver);
-            actions.clickAndHold(getElement(xpath)).perform();
+            actions.clickAndHold(element).perform();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action click and hold element have path '"+xpath+"', cause invalid state");
         }
     }
 
     @Override
     public void clickAndHoldElement(By location) {
+        WebElement element = getElement(location);
         try {
             Actions actions = new Actions(baseDriver);
-            actions.clickAndHold(getElement(location)).perform();
+            actions.clickAndHold(element).perform();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action click and hold element have path '"+location.toString()+"', cause invalid state");
         }
     }
 
@@ -130,41 +131,45 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
             Actions actions = new Actions(baseDriver);
             actions.clickAndHold(element).perform();
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action click and hold element have path '"+element.toString()+"', cause invalid state");
         }
     }
 
     @Override
     public void clickText(String text) {
+        if(text.isEmpty() || text.isBlank()){
+            throw new IllegalArgumentException("Text expect can be null or blank");
+        }
         try{
-            if(text.isEmpty() || text.isBlank()){
-                throw new IllegalArgumentException("Text expect can be null or blank");
-            }
             WebElement element = getElement(By.xpath("//body/*[text()[contains(.,'"+text+"')]][not(script)]"));
             element.click();
         }catch (Exception error){
-            System.err.println("No such found element contain text");
+            throw new java.util.NoSuchElementException("Can not found text '"+text+"' in current page");
         }
 
     }
 
     @Override
     public void dragAndDrop(String sourceXpath, String destinationXpath) {
+        WebElement elementSource = getElement(sourceXpath);
+        WebElement elementDestination = getElement(destinationXpath);
         try{
             Actions actions = new Actions(baseDriver);
-            actions.dragAndDrop(getElement(sourceXpath), getElement(destinationXpath)).perform();
+            actions.dragAndDrop(elementSource, elementDestination).perform();
         }catch (Exception error){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action drag and drop with elements have path '"+sourceXpath+"' and '"+destinationXpath+"'");
         }
     }
 
     @Override
     public void dragAndDrop(By sourceLocation, By destinationLocation) {
+        WebElement elementSource = getElement(sourceLocation);
+        WebElement elementDestination = getElement(destinationLocation);
         try{
             Actions actions = new Actions(baseDriver);
-            actions.dragAndDrop(getElement(sourceLocation), getElement(destinationLocation)).perform();
+            actions.dragAndDrop(elementSource, elementDestination).perform();
         }catch (Exception error){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action drag and drop with elements have path '"+sourceLocation.toString()+"' and '"+destinationLocation.toString()+"'");
         }
     }
 
@@ -174,27 +179,29 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
             Actions actions = new Actions(baseDriver);
             actions.dragAndDrop(sourceElement, destinationElement).perform();
         }catch (Exception error){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action drag and drop with elements have path '"+sourceElement.toString()+"' and '"+destinationElement.toString()+"'");
         }
     }
 
     @Override
     public void doubleClickElement(String xpath) {
+        WebElement element = getElement(xpath);
         try{
             Actions actions = new Actions(baseDriver);
-            actions.doubleClick(getElement(xpath));
+            actions.doubleClick(element);
         }catch (Exception error){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action double click with elements have path '"+xpath+"'");
         }
     }
 
     @Override
     public void doubleClickElement(By location) {
+        WebElement element = getElement(location);
         try{
             Actions actions = new Actions(baseDriver);
             actions.doubleClick(getElement(location));
         }catch (Exception error){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action double click with elements have path '"+location.toString()+"'");
         }
     }
 
@@ -204,96 +211,136 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
             Actions actions = new Actions(baseDriver);
             actions.doubleClick(element);
         }catch (Exception error){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not perform action double click with elements have path '"+element.toString()+"'");
         }
     }
 
     @Override
     public void elementAttributeShouldMatch(String xpath, String attribute, String expect) {
+        if(attribute.isBlank() || attribute.isEmpty()){
+            throw new IllegalArgumentException("The attribute properties can not blank or empty");
+        }
+        if(expect.isBlank() || expect.isEmpty()){
+            throw new IllegalArgumentException("The expect properties can not blank or empty");
+        }
+        WebElement element = getElement(xpath);
         try {
-            String actualAttribute = getElement(xpath).getAttribute(attribute);
+            String actualAttribute = element.getAttribute(attribute);
             Assert.assertEquals(actualAttribute, expect, "Attribute of element does not match");
-        }catch (Exception exception){
-            System.err.println("No such found element");
+        }catch (Exception error){
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+xpath+"'");
         }
     }
 
     @Override
     public void elementAttributeShouldMatch(By location, String attribute, String expect) {
+        if(attribute.isBlank() || attribute.isEmpty()){
+            throw new IllegalArgumentException("The attribute properties can not blank or empty");
+        }
+        if(expect.isBlank() || expect.isEmpty()){
+            throw new IllegalArgumentException("The expect properties can not blank or empty");
+        }
+        WebElement element = getElement(location);
         try {
-            String actualAttribute = getElement(location).getAttribute(attribute);
+            String actualAttribute = element.getAttribute(attribute);
             Assert.assertEquals(actualAttribute, expect, "Attribute of element does not match");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+location.toString()+"'");
         }
     }
 
     @Override
     public void elementAttributeShouldMatch(WebElement element, String attribute, String expect) {
+        if(attribute.isBlank() || attribute.isEmpty()){
+            throw new IllegalArgumentException("The attribute properties can not blank or empty");
+        }
+        if(expect.isBlank() || expect.isEmpty()){
+            throw new IllegalArgumentException("The expect properties can not blank or empty");
+        }
         try {
             String actualAttribute = element.getAttribute(attribute);
             Assert.assertEquals(actualAttribute, expect, "Attribute of element does not match");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+element.toString()+"'");
         }
     }
 
     @Override
     public void elementAttributeShouldNotMatch(String xpath, String attribute, String expect) {
+        if(attribute.isBlank() || attribute.isEmpty()){
+            throw new IllegalArgumentException("The attribute properties can not blank or empty");
+        }
+        if(expect.isBlank() || expect.isEmpty()){
+            throw new IllegalArgumentException("The expect properties can not blank or empty");
+        }
+        WebElement element = getElement(xpath);
         try {
-            String actualAttribute = getElement(xpath).getAttribute(attribute);
-            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is match");
+            String actualAttribute = element.getAttribute(attribute);
+            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is matching");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+xpath+"'");
         }
     }
 
     @Override
     public void elementAttributeShouldNotMatch(By location, String attribute, String expect) {
+        if(attribute.isBlank() || attribute.isEmpty()){
+            throw new IllegalArgumentException("The attribute properties can not blank or empty");
+        }
+        if(expect.isBlank() || expect.isEmpty()){
+            throw new IllegalArgumentException("The expect properties can not blank or empty");
+        }
+        WebElement element = getElement(location);
         try {
-            String actualAttribute = getElement(location).getAttribute(attribute);
-            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is match");
+            String actualAttribute = element.getAttribute(attribute);
+            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is matching");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+location.toString()+"'");
         }
     }
 
     @Override
     public void elementAttributeShouldNotMatch(WebElement element, String attribute, String expect) {
+        if(attribute.isBlank() || attribute.isEmpty()){
+            throw new IllegalArgumentException("The attribute properties can not blank or empty");
+        }
+        if(expect.isBlank() || expect.isEmpty()){
+            throw new IllegalArgumentException("The expect properties can not blank or empty");
+        }
         try {
             String actualAttribute = element.getAttribute(attribute);
-            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is match");
+            Assert.assertNotEquals(actualAttribute, expect, "Attribute of element is matching");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+element.toString()+"'");
         }
     }
 
     @Override
     public void elementShouldBeDisabled(String xpath) {
+        WebElement element = getElement(xpath);
         try {
-            WebElement element = getElement(xpath);
-            Assert.assertFalse(element.isEnabled(), "Element is not disabled");
+            Assert.assertFalse(element.isEnabled(), "Element have path '"+xpath+"' is not disabled");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+xpath+"' or this element is not display anymore");
         }
     }
 
     @Override
     public void elementShouldBeDisabled(By location) {
+        WebElement element = getElement(location);
         try {
-            WebElement element = getElement(location);
-            Assert.assertFalse(element.isEnabled(), "Element is not disabled");
+            Assert.assertFalse(element.isEnabled(), "Element have path '"+location.toString()+"' is not disabled");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+location.toString()+"' or this element is not display anymore");
         }
     }
 
     @Override
     public void elementShouldBeDisabled(WebElement element) {
         try {
-            Assert.assertFalse(element.isEnabled(), "Element is not disabled");
+            Assert.assertFalse(element.isEnabled(), "Element have path '"+element.toString()+"' is not disabled");
         }catch (Exception exception){
-            System.err.println("No such found element");
+            throw new InvalidElementStateException("Can not get attribute of elements have path '"+element.toString()+"' or this element is not display anymore");
         }
     }
 
@@ -554,7 +601,7 @@ public class WebUICommon extends DriverBase implements IWebUICommon {
 
             return  wait.until(driver -> driver.findElement(By.xpath(xpath)));
         }catch (Exception error){
-            throw new RuntimeException("No such found element");
+            throw new RuntimeException("No such found element have path: '"+xpath+"'");
         }
     }
 
