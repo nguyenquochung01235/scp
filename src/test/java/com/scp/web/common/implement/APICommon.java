@@ -8,11 +8,11 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 
-import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import org.json.JSONObject;
 import org.testng.Assert;
 
 public class APICommon implements IAPICommon {
@@ -49,10 +49,11 @@ public class APICommon implements IAPICommon {
 
 
     @Override
-    public Object sendPostRequest(String path, JsonObject param) {
+    public Object sendPostRequest(String path, JSONObject param) {
+
         RequestSpecification post = RestAssured.given();
         post.header("Content-Type", "application/json");
-        Response response = post.body(param).post(path);
+        Response response = post.body(param.toMap()).post(path);
 
         System.out.println("Sending Post Request: " + baseURI + path);
         System.out.println("Response: "+ response.asPrettyString());
@@ -74,7 +75,15 @@ public class APICommon implements IAPICommon {
 
     @Override
     public Object sendPostRequest(String path, HashMap param) {
-        return null;
+        RequestSpecification post = RestAssured.given();
+        post.header("Content-Type", "application/json");
+        Response response = post.body(param).post(path);
+
+        System.out.println("Sending Post Request: " + baseURI + path);
+        System.out.println("Response: "+ response.asPrettyString());
+
+        return response;
+
     }
 
     @Override
@@ -82,10 +91,25 @@ public class APICommon implements IAPICommon {
         Object json_param = keywordCommon.readFileAndConvertToJsonObject(jsonFileLocate);
         RequestSpecification post = RestAssured.given();
         post.header("Content-Type", "application/json");
-        Response response = post.body(json_param).post(path);
+        Response response = post.body(((JSONObject) json_param).toMap()).post(path);
 
         System.out.println("Sending Post Request: " + baseURI + path);
         System.out.println("Response: "+ response.asPrettyString());
+        return response;
+    }
+
+    @Override
+    public Object sendBasicAuthenticationRequest(String path, String username, String password) {
+        authentication = basic(username, password);
+
+        RequestSpecification authen = RestAssured.given();
+        Response response = authen.get(path);
+
+//        Response response = authen.auth().basic(username, password).get(path);
+
+        System.out.println("Sending Get Request With Basic Authentication: " + baseURI + path);
+        System.out.println("Response: "+ response.asPrettyString());
+
         return response;
     }
 

@@ -1,18 +1,4 @@
 {
-  "id": 100,
-  "category": {
-    "id": 0,
-    "name": "My_category"
-  },
-  "name": "MY_pet_id100",
-  "photoUrls": [
-    "string"
-  ],
-  "tags": [
-    {
-      "id": 0,
-      "name": "string"
-    }
-  ],
-  "status": "available"
+  "email": "test_user_1@gmail.com",
+  "password":"123456789"
 }

@@ -3,7 +3,7 @@ package com.scp.web.testcase;
 import com.scp.web.common.implement.APICommon;
 import com.scp.web.common.implement.KeywordCommon;
 import com.scp.web.common.implement.WebUICommon;
-import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
+import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ public class Demo {
 
     @Test
     public void test_api(){
-        apiCommon.setBaseUrl("https://petstore.swagger.io/v2");
+        apiCommon.setBaseUrl("https://practice.expandtesting.com/notes/api");
 
         System.out.println("Test sendGetRequest");
-        apiCommon.sendGetRequest("/pet/1");
+        apiCommon.sendGetRequest("/health-check");
 
         System.out.println("Test sendGetRequestWithPathParameter");
         List<Object> lparam = new ArrayList<>();
@@ -43,26 +43,27 @@ public class Demo {
         apiCommon.sendGetRequestWithPathParameter("/{category}/{petId}", lparam);
 
         System.out.println("Test sendPostRequest JsonObject");
-        JsonObject json_oder = new JsonObject();
-        json_oder.add("id", 0);
-        json_oder.add("petId", 0);
-        json_oder.add("quantity", 0);
-        json_oder.add("shipDate", "2023-10-16T09:57:51.630Z");
-        json_oder.add("status", "placed");
-        json_oder.add("complete", true);
-        apiCommon.sendPostRequest("/store/order" ,json_oder);
+        JSONObject json_create_user = new JSONObject();
+        json_create_user.put("email","test_user_1@gmail.com");
+        json_create_user.put("password","123456789");
+
+        apiCommon.sendPostRequest("/users/login" ,json_create_user);
 
         System.out.println("Test sendPostRequest Map");
-        Map<String, Object> map_oder = new HashMap<>();
-        map_oder.put("id",0);
-        map_oder.put("petId",0);
-        map_oder.put("quantity",0);
-        map_oder.put("shipDate","2023-10-16T09:57:51.630Z");
-        map_oder.put("status","placed");
-        map_oder.put("complete",true);
-        apiCommon.sendPostRequest("/store/order", map_oder);
+        Map<String, Object> map_create_user = new HashMap<>();
+        map_create_user.put("email","test_user_1@gmail.com");
+        map_create_user.put("password","123456789");
+        apiCommon.sendPostRequest("/users/login", map_create_user);
 
-        apiCommon.sendPostRequest("/pet","/com/scp/web/testdata/data_api_test_1.json");
+        System.out.println("Test sendPostRequest Hashmap");
+        HashMap<String, Object> hashmap_user = new HashMap<>();
+        hashmap_user.put("email","test_user_1@gmail.com");
+        hashmap_user.put("password","123456789");
+        apiCommon.sendPostRequest("/users/login", hashmap_user);
+
+        apiCommon.sendPostRequest("/users/login","/com/scp/web/testdata/data_api_test_1.json");
+
+        apiCommon.sendBasicAuthenticationRequest("/users/profile", "test_user_1@gmail.com", "123456789");
 
     }
 
