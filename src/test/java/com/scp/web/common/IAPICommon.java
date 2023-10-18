@@ -10,13 +10,18 @@ import java.util.Map;
 public interface IAPICommon {
 
     public void setBaseUrl(String url);
+    public void setLogLevel(String level);
+    public void setContentTypeIsApplicationJson();
+    public void setHeaderAttribute(String name, String value);
+
+    public void setAuthentication(String token);
     public Response sendGetRequest(String path);
-    public Object sendGetRequestWithPathParameter(String path, List<Object> path_param);
-    public Object sendPostRequest(String path, JSONObject param);
-    public Object sendPostRequest(String path, Map param);
-    public Object sendPostRequest(String path, HashMap param);
-    public Object sendPostRequest(String path, String jsonFileLocate);
-    public Object sendBasicAuthenticationRequest(String path, String username, String password);
+    public Response sendGetRequestWithPathParameter(String path, List<Object> path_param);
+    public Response sendPostRequest(String path, JSONObject param);
+    public Response sendPostRequest(String path, Map param);
+    public Response sendPostRequest(String path, HashMap param);
+    public Response sendPostRequest(String path, String jsonFileLocate);
     public void verifyStatus(Response response, int status);
     public void verifyStatusSuccess(Response response);
+    public void verifyStatusFailure(Response response);
 }

@@ -5,6 +5,7 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.function.Function;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 public class KeywordCommon implements IKeywordCommon {
     public KeywordCommon(){
@@ -25,8 +26,11 @@ public class KeywordCommon implements IKeywordCommon {
     }
 
     @Override
-    public Object readFileAndConvertToJsonObject(String fileLocate) {
+    public Object readJsonFileAndConvertToJsonObject(String fileLocate) {
         String absolutedpath = Paths.get("").toAbsolutePath().toString() + "\\src\\test\\java" + Paths.get(fileLocate);
+
+        Assert.assertTrue(absolutedpath.matches(".+\\.json"), "This file is not supported, Please input Json file: " + absolutedpath);
+
         File file = new File(absolutedpath);
         BufferedReader br = null;
         try {
@@ -34,22 +38,23 @@ public class KeywordCommon implements IKeywordCommon {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        String st;
-        String data = "";
+        String line;
+        StringBuilder data = new StringBuilder();
         while (true)
-
         {
             try {
-                if (!((st = br.readLine()) != null)) break;
+                if ((line = br.readLine()) == null) break;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            data = data +st;
+            data.append(line);
         }
-
-        JSONObject object = new JSONObject(data);
-
-
-            return object;
+        JSONObject result = null;
+        try{
+            result = new JSONObject(data.toString());
+        }catch(Exception e) {
+            Assert.fail("This file is not Json format, Please check : " + absolutedpath);
+        }
+        return result;
     }
 }

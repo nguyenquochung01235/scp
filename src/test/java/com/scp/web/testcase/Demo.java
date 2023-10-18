@@ -3,14 +3,10 @@ package com.scp.web.testcase;
 import com.scp.web.common.implement.APICommon;
 import com.scp.web.common.implement.KeywordCommon;
 import com.scp.web.common.implement.WebUICommon;
+import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class Demo {
@@ -34,38 +30,51 @@ public class Demo {
     @Test
     public void test_api(){
         apiCommon.setBaseUrl("https://practice.expandtesting.com/notes/api");
+        apiCommon.setLogLevel("body");
+        apiCommon.setLogLevel("method");
 
-        System.out.println("Test sendGetRequest");
-        apiCommon.sendGetRequest("/health-check");
 
-        System.out.println("Test sendGetRequestWithPathParameter");
-        List<Object> lparam = new ArrayList<>();
-        lparam.add("pet");
-        lparam.add("1");
-        apiCommon.sendGetRequestWithPathParameter("/{category}/{petId}", lparam);
+        apiCommon.setContentTypeIsApplicationJson();
 
-        System.out.println("Test sendPostRequest JsonObject");
-        JSONObject json_create_user = new JSONObject();
-        json_create_user.put("email","test_user_1@gmail.com");
-        json_create_user.put("password","123456789");
+//        System.out.println("Test sendGetRequest");
+//        Response response_health_check = apiCommon.sendGetRequest("/health-check");
+//        apiCommon.verifyStatus(response_health_check, 200);
+//
+//        System.out.println("Test sendGetRequestWithPathParameter");
+//        List<Object> lparam = new ArrayList<>();
+//        lparam.add("health-check");
+//        Response response_health_check2 = apiCommon.sendGetRequestWithPathParameter("/{test_param}", lparam);
+//        apiCommon.verifyStatusSuccess(response_health_check2);
+//
+//        System.out.println("Test sendGetRequest");
+//        Response response_failed = apiCommon.sendGetRequest("/health-check-failed");
+//        apiCommon.verifyStatusFailure(response_failed);
+//
+//        System.out.println("Test sendPostRequest JsonObject");
+//        JSONObject json_user = new JSONObject();
+//        json_user.put("email","test_user_1@gmail.com");
+//        json_user.put("password","123456789");
+//
+//        apiCommon.sendPostRequest("/users/login" ,json_user);
+//
+//        System.out.println("Test sendPostRequest Map");
+//        Map<String, Object> map_user = new HashMap<>();
+//        map_user.put("email","test_user_1@gmail.com");
+//        map_user.put("password","123456789");
+//        apiCommon.sendPostRequest("/users/login", map_user);
+//
+//        System.out.println("Test sendPostRequest Hashmap");
+//        HashMap<String, Object> hashmap_user = new HashMap<>();
+//        hashmap_user.put("email","test_user_1@gmail.com");
+//        hashmap_user.put("password","123456789");
+//        apiCommon.sendPostRequest("/users/login", hashmap_user);
+//
+        Response login_info = apiCommon.sendPostRequest("/users/login", "/com/scp/web/testdata/data_api_test_1.json");
+        JSONObject json_login_info = (JSONObject) new JSONObject(login_info.asString()).get("data");
 
-        apiCommon.sendPostRequest("/users/login" ,json_create_user);
+        apiCommon.setHeaderAttribute("x-auth-token", (String) json_login_info.toMap().get("token"));
+        apiCommon.sendGetRequest("/users/profile");
 
-        System.out.println("Test sendPostRequest Map");
-        Map<String, Object> map_create_user = new HashMap<>();
-        map_create_user.put("email","test_user_1@gmail.com");
-        map_create_user.put("password","123456789");
-        apiCommon.sendPostRequest("/users/login", map_create_user);
-
-        System.out.println("Test sendPostRequest Hashmap");
-        HashMap<String, Object> hashmap_user = new HashMap<>();
-        hashmap_user.put("email","test_user_1@gmail.com");
-        hashmap_user.put("password","123456789");
-        apiCommon.sendPostRequest("/users/login", hashmap_user);
-
-        apiCommon.sendPostRequest("/users/login","/com/scp/web/testdata/data_api_test_1.json");
-
-        apiCommon.sendBasicAuthenticationRequest("/users/profile", "test_user_1@gmail.com", "123456789");
 
     }
 
