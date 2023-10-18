@@ -3,12 +3,9 @@ package com.scp.web.testcase;
 import com.scp.web.common.implement.APICommon;
 import com.scp.web.common.implement.KeywordCommon;
 import com.scp.web.common.implement.WebUICommon;
-<<<<<<< HEAD
 import io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonObject;
 import org.openqa.selenium.By;
-=======
 import org.openqa.selenium.WebElement;
->>>>>>> backup
 import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,13 +24,10 @@ public class Demo {
     public void e2e(){
         webUICommon.initialDriver();
         webUICommon.navigateToURL("https://www.saucedemo.com/v1/");
-<<<<<<< HEAD
         webUICommon.capturePageScreenshot("before_click_login_button");
         webUICommon.getElement(By.xpath("//*[@id=\"login-button\"]")).click();
         webUICommon.capturePageScreenshot("after_click_login_button");
-=======
         webUICommon.clickText("abc");
->>>>>>> backup
         webUICommon.quitDriver();
     }
 
